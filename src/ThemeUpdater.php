@@ -6,19 +6,29 @@
  * the theme repo. Project features like wiki and issues can be
  * hidden from external users.
  *
- * @package Leitsch\GitLabUpdater
+ * @package Moenus\GitLabUpdater
  * @author  Florian Brinkmann
  */
 
-namespace Leitsch\GitLabUpdater;
+namespace Moenus\GitLabUpdater;
 
-/**
- * If this file is called directly, abort.
- */
+// If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/**
+ * Include UpdaterBase class.
+ */
+require_once 'UpdaterBase.php';
+
+/**
+ * Class ThemeUpdater
+ *
+ * Class for handling theme updates from GitLab repo.
+ *
+ * @package Moenus\GitLabUpdater
+ */
 class ThemeUpdater extends UpdaterBase {
 	/**
 	 * Data of themes which should get GitLab updates.
@@ -42,17 +52,16 @@ class ThemeUpdater extends UpdaterBase {
 	 * }
 	 */
 	public function __construct( $args = [] ) {
-		 // Set theme data.
+		// Set theme data.
 		$theme_data = ( is_multisite() ? (array) get_site_option( "wp-gitlab-updater-themes" ) : (array) get_option( "wp-gitlab-updater-themes" ) );
-		if ( false !== $theme_data && false !== $theme_data[0] ) {
+
+		if ( isset($theme_data[0]) && false !== $theme_data[0] ) {
 			$this->theme_data = $theme_data;
 		}
 
 		// Check if we have values.
-		if ( isset( $args['slug'] ) && isset( $args['access_token'] ) && isset( $args['gitlab_url'] ) && isset( $args['repo'] ) ) {
-			/**
-			 * Create array to insert them into theme_data.
-			 */
+		if ( isset( $args['slug'], $args['access_token'], $args['gitlab_url'], $args['repo'] ) ) {
+			// Create array to insert them into theme_data.
 			$tmp_array = [
 				'settings-array-key' => $args['slug'],
 				'access-token'       => $args['access_token'],
@@ -90,19 +99,15 @@ class ThemeUpdater extends UpdaterBase {
 				return $transient;
 			}
 
-			/**
-			 * Check if we have an update for a theme with the same slug from W.org
-			 * and remove it.
-			 *
-			 * At first, we loop the GitLab updater themes.
-			 */
+			// Check if we have an update for a theme with the same slug from W.org
+			// and remove it.
+			//
+			// At first, we loop the GitLab updater themes.
 			foreach ( $this->theme_data as $theme ) {
 				$theme_slug = $theme['settings-array-key'];
 
-				/**
-				 * Check if we have a theme with the same slug and another package URL
-				 * than our GitLab URL.
-				 */
+				// Check if we have a theme with the same slug and another package URL
+				// than our GitLab URL.
 				if ( array_key_exists( $theme_slug, $transient->response ) && false === strpos( $transient->response[ $theme_slug ]['package'], $theme['gitlab-url'] ) ) {
 					// Unset the response key for that theme.
 					unset( $transient->response[ $theme_slug ] );

@@ -2,15 +2,13 @@
 /**
  * Base class for GitLab updater.
  *
- * @package Leitsch\GitLabUpdater
+ * @package Moenus\GitLabUpdater
  * @author  Florian Brinkmann
  */
 
-namespace Leitsch\GitLabUpdater;
+namespace Moenus\GitLabUpdater;
 
-/**
- * If this file is called directly, abort.
- */
+// If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -21,6 +19,20 @@ if ( ! defined( 'WPINC' ) ) {
  * Class UpdaterBase
  */
 class UpdaterBase {
+	/**
+	 * UpdaterBase constructor.
+	 */
+	public function __construct() {
+		// Setup options page.
+		new Settings();
+
+		// Run plugin updater.
+		new PluginUpdater();
+
+		// Run theme updater.
+		new ThemeUpdater();
+	}
+
 	/**
 	 * Fetch data of latest version.
 	 *

@@ -6,19 +6,27 @@
  * the plugin repo. Project features like wiki and issues can be
  * hidden from external users.
  *
- * @package Leitsch\GitLabUpdater
+ * @package Moenus\GitLabUpdater
  * @author  Florian Brinkmann
  */
 
-namespace Leitsch\GitLabUpdater;
+namespace Moenus\GitLabUpdater;
 
-/**
- * If this file is called directly, abort.
- */
+// If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Include UpdaterBase class.
+require_once 'UpdaterBase.php';
+
+/**
+ * Class PluginUpdater
+ *
+ * Class for handling plugin updates from GitLab repo.
+ *
+ * @package Moenus\GitLabUpdater
+ */
 class PluginUpdater extends UpdaterBase {
 	/**
 	 * Data of plugins which should get GitLab updates.
@@ -123,7 +131,12 @@ class PluginUpdater extends UpdaterBase {
 				/**
 				 * Check if the currently updated plugin matches our plugin base name.
 				 */
-				if ( $args['plugin'] === $plugin['settings-array-key'] && false !== $plugin ) {
+
+				if(!isset($args['plugin'], $plugin['settings-array-key']) ){
+					continue;
+				}
+
+				if ($args['plugin']  === $plugin['settings-array-key'] && false !== $plugin ) {
 					$source = $this->filter_source_name( $source, $remote_source, $plugin['slug'] );
 				}
 			}
@@ -145,6 +158,11 @@ class PluginUpdater extends UpdaterBase {
 		}
 
 		foreach ( $this->plugin_data as $plugin ) {
+
+			if(!isset($plugin['gitlab-url'], $plugin['repo'], $plugin['access-token']) ){
+				continue;
+			}
+
 			// Get data from array which we need to build package URL.
 			$gitlab_url   = $plugin['gitlab-url'];
 			$repo         = $plugin['repo'];

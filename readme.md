@@ -29,7 +29,7 @@ Project features like wiki and issues can be hidden from external users.
 ### Inside a theme
 
 To bundle it into a theme, you can just grab the `src/theme-updater.php` 
-and `src/updater-base.php` and put it into your theme, for example, 
+and `src/UpdaterBase.php` and put it into your theme, for example, 
 into a `wp-gitlab-updater` folder. After that, you can call it like that:
 
 ```php
@@ -54,7 +54,7 @@ directory of the theme.
 
 ### Inside a plugin
 
-For that, take the `src/plugin-updater.php` and `src/updater-base.php`, 
+For that, take the `src/plugin-updater.php` and `src/UpdaterBase.php`, 
 put it into your plugin and call it:
 
 ```php
