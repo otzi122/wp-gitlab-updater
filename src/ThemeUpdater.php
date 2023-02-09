@@ -128,6 +128,11 @@ class ThemeUpdater extends UpdaterBase {
 		add_filter( 'upgrader_source_selection', function ( $source, $remote_source, $wp_upgrader, $args ) {
 			foreach ( $this->theme_data as $theme ) {
 				// Check if the currently updated theme matches our theme slug.
+
+				if(!isset($args['theme'], $plugin['settings-array-key']) ){
+					continue;
+				}
+
 				if ( $args['theme'] === $theme['settings-array-key'] && false !== $theme ) {
 					$source = $this->filter_source_name( $source, $remote_source, $theme['settings-array-key'] );
 				}
