@@ -102,7 +102,7 @@ class PluginUpdater extends UpdaterBase {
 			 * At first, we loop the GitLab updater plugins.
 			 */
 			foreach ( $this->plugin_data as $plugin ) {
-				$plugin_basename = $plugin['settings-array-key'];
+				$plugin_basename = $plugin['settings-array-key'] ?? '';
 				/**
 				 * Check if we have a plugin with the same slug and another package URL
 				 * than our GitLab URL.
