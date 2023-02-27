@@ -159,7 +159,7 @@ class ThemeUpdater extends UpdaterBase {
 			$repo         = $theme['repo'];
 			$access_token = $theme['access-token'];
 
-			if ( array_key_exists( 'job', $theme ) ) {
+			if ( is_array($theme) && array_key_exists( 'job', $theme ) ) {
 				$job = $theme['job'];
 			}
 
@@ -201,10 +201,11 @@ class ThemeUpdater extends UpdaterBase {
 			}
 
 		    // Get the package URL.
+
+			$theme_package = "$gitlab_url/api/v4/projects/$repo/repository/archive.zip?sha=$latest_version&private_token=$access_token";
+
 			if ( isset( $job ) ) {
 				$theme_package = "$gitlab_url/api/v4/projects/$repo/jobs/artifacts/$latest_version/download?job=$job&private_token=$access_token";
-			} else {
-				$theme_package = "$gitlab_url/api/v4/projects/$repo/repository/archive.zip?sha=$latest_version&private_token=$access_token";
 			}
 
 			// Check the response.
