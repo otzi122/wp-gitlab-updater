@@ -126,14 +126,10 @@ class ThemeUpdater extends UpdaterBase {
 		 * (so everything but matching the theme slug).
 		 */
 		add_filter( 'upgrader_source_selection', function ( $source, $remote_source, $wp_upgrader, $args ) {
-			foreach ( $this->theme_data as $theme ) {
-				// Check if the currently updated theme matches our theme slug.
-
-				if(!isset($args['theme'], $plugin['settings-array-key']) ){
-					continue;
-				}
-
-				if ( $args['theme'] === $theme['settings-array-key'] && false !== $theme ) {
+			foreach ( $this->theme_data as $theme )
+			{
+				if ( isset($args['theme'], $theme['settings-array-key']) && $args['theme'] === $theme['settings-array-key'])
+				{
 					$source = $this->filter_source_name( $source, $remote_source, $theme['settings-array-key'] );
 				}
 			}
@@ -189,7 +185,7 @@ class ThemeUpdater extends UpdaterBase {
 			$latest_version = $data[0]->name;
 
 			// Remove optional v in tag.
-			$latest_version_trim = str_replace('v', '', $latest_version);
+			$latest_version_trim = trim(str_replace('v', '', $latest_version));
 
 			// Check if new version is available.
 			if ( ! isset( $transient->checked[ $theme['settings-array-key'] ] ) ) {
