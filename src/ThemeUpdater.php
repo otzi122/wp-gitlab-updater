@@ -150,18 +150,24 @@ class ThemeUpdater extends UpdaterBase {
 			return $transient;
 		}
 
-		foreach ( $this->theme_data as $theme ) {
+		foreach ( $this->theme_data as $theme ) 
+		{
+			if(!isset($theme['gitlab-url'], $theme['repo'], $theme['access-token']))
+			{
+				continue;
+			}
+
 			$gitlab_url   = $theme['gitlab-url'];
 			$repo         = $theme['repo'];
 			$access_token = $theme['access-token'];
 
-			if ( is_array($theme) && array_key_exists( 'job', $theme ) ) {
+			if (isset($theme['job']))
+			{
 				$job = $theme['job'];
 			}
 
 			// Get tag list from GitLab repo.
 			$request = $this->fetch_tags_from_repo( $gitlab_url, $repo, $access_token );
-
 			$response_code = wp_remote_retrieve_response_code( $request );
 
 			/**

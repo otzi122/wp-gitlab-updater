@@ -59,7 +59,7 @@ class PluginUpdater extends UpdaterBase {
 		}
 
 		// Check if we have values.
-		if ( isset( $args['slug'] ) && isset( $args['plugin_base_name'] ) && isset( $args['access_token'] ) && isset( $args['gitlab_url'] ) && isset( $args['repo'] ) ) {
+		if ( isset( $args['slug'], $args['plugin_base_name'], $args['access_token'], $args['gitlab_url'], $args['repo'] ) ) {
 			// Create array to insert them into plugin_data.
 			$tmp_array = [
 				'settings-array-key' => $args['plugin_base_name'],
